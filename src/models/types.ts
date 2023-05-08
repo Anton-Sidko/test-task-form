@@ -1,6 +1,6 @@
 export interface FormValues {
   name: string;
-  birth: Date | undefined;
+  birthDate: Date | string;
   sex: GenderType | string;
   city: string;
   specialty: string;
@@ -17,7 +17,7 @@ export interface City {
 export interface Specialty {
   id: string;
   name: string;
-  params?: GenderType | AgeRestrictionType;
+  params?: { gender: GenderType } | AgeRestrictionType;
 }
 
 export interface Doctor {
@@ -29,5 +29,8 @@ export interface Doctor {
   cityId: string;
 }
 
-type GenderType = { gender: 'Male' | 'Female' };
+export type GenderOptionsType = { value: GenderType; label: GenderType };
+export type OptionsType = { value: string; label: string };
+export type GenderType = 'Male' | 'Female';
+
 type AgeRestrictionType = { minAge?: number; maxAge?: number };

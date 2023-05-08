@@ -1,15 +1,20 @@
-import { FormValues } from './types';
+import { FormValues, GenderOptionsType } from './types';
 
 export const FORM_INITIAL_VALUES: FormValues = {
   name: '',
-  birth: undefined,
-  sex: 'placeholder',
-  city: 'placeholder',
-  specialty: 'placeholder',
-  doctor: 'placeholder',
+  birthDate: '',
+  sex: 'Please select your gender',
+  city: 'Please select your city',
+  specialty: "Please select doctor's specialty",
+  doctor: 'Please select doctor',
   email: '',
   phone: '',
 };
+
+export const GENDER_OPTIONS: GenderOptionsType[] = [
+  { value: 'Male', label: 'Male' },
+  { value: 'Female', label: 'Female' },
+];
 
 export const CITIES_URL =
   'https://run.mocky.io/v3/9fcb58ca-d3dd-424b-873b-dd3c76f000f4';
