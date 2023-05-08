@@ -1,0 +1,60 @@
+// Reset styles
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%; //1rem = 10px;
+}
+
+body {
+  font-family: 'Roboto';
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  background-image: linear-gradient(
+    to right bottom,
+    var(--color-bgc),
+    var(--color-bgc-2)
+  );
+  color: var(--color-text);
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+:root {
+  --main-color: #19647e;
+  --accent-color: #f2542d;
+  --color-bgc: #609cb6;
+  --color-bgc-2: #b4c4dd;
+  --color-text: #070606;
+}
+
+// Fonts
+@font-face {
+  font-family: 'Roboto';
+  font-display: swap;
+  font-style: normal;
+  src: local('Roboto'), url('./fonts/Roboto/Roboto.woff2') format('woff2'),
+    url('./fonts/Roboto/Roboto.woff') format('woff'),
+    url('./fonts/Roboto/Roboto.ttf') format('truetype');
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.content-container {
+  width: min(100%, 1440px);
+  margin: 0 auto;
+}
+
