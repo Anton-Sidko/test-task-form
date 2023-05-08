@@ -1,11 +1,17 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { validationSchema } from '../../models/validationSchema';
 import { fetchCities, fetchDoctors, fetchSpecialties } from '../../utils/api';
+import { FORM_INITIAL_VALUES } from '../../models/const';
 
 const options = [
   { value: 'option1', label: 'Option 1' },
   { value: 'option2', label: 'Option 2' },
   { value: 'option3', label: 'Option 3' },
+];
+const options2 = [
+  { value: 'Male', label: 'Male' },
+  { value: 'Female', label: 'Female' },
+  { value: 'Femalsdfe', label: 'Femalsdfe' },
 ];
 
 console.log(await fetchCities());
@@ -15,7 +21,7 @@ console.log(await fetchDoctors());
 const DoctorsForm = () => {
   return (
     <Formik
-      initialValues={{ firstName: '', lastName: '', email: '' }}
+      initialValues={FORM_INITIAL_VALUES}
       validationSchema={validationSchema}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
@@ -49,14 +55,41 @@ const DoctorsForm = () => {
           <ErrorMessage name="date" />
         </div>
 
-        <label htmlFor="selectField">Select an option:</label>
+        <label htmlFor="sex">Select an option:</label>
         <Field
           as="select"
-          name="selectField"
+          name="sex"
           id="selectField"
         >
-          <option value="">--Please select an option--</option>
+          <option
+            value="placeholder"
+            disabled
+          >
+            --Please select an option--
+          </option>
           {options.map(option => (
+            <option
+              key={option.value}
+              value={option.value}
+            >
+              {option.label}
+            </option>
+          ))}
+        </Field>
+        <label htmlFor="sex">Select an option:</label>
+        <Field
+          as="select"
+          name="sex"
+          id="selectField"
+          required
+        >
+          <option
+            value="placeholder"
+            disabled
+          >
+            --Please select an option--
+          </option>
+          {options2.map(option => (
             <option
               key={option.value}
               value={option.value}

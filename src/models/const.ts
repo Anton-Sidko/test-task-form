@@ -3,10 +3,10 @@ import { FormValues } from './types';
 export const FORM_INITIAL_VALUES: FormValues = {
   name: '',
   birth: undefined,
-  sex: undefined,
-  city: '',
-  specialty: '',
-  doctor: '',
+  sex: 'placeholder',
+  city: 'placeholder',
+  specialty: 'placeholder',
+  doctor: 'placeholder',
   email: '',
   phone: '',
 };

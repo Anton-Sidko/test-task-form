@@ -1,7 +1,7 @@
 export interface FormValues {
   name: string;
   birth: Date | undefined;
-  sex: GenderType | undefined;
+  sex: GenderType | string;
   city: string;
   specialty: string;
   doctor: string;
