@@ -33,7 +33,7 @@ const SelectField = function ({
 
         {options.map(option => (
           <option
-            key={option.value}
+            key={option.id}
             value={option.value}
           >
             {option.label}

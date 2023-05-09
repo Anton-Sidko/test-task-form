@@ -12,8 +12,8 @@ export const FORM_INITIAL_VALUES: FormValues = {
 };
 
 export const GENDER_OPTIONS: GenderOptionsType[] = [
-  { value: 'Male', label: 'Male' },
-  { value: 'Female', label: 'Female' },
+  { id: '1', value: 'Male', label: 'Male' },
+  { id: '2', value: 'Female', label: 'Female' },
 ];
 
 export const CITIES_URL =

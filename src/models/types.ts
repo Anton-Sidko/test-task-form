@@ -29,8 +29,12 @@ export interface Doctor {
   cityId: string;
 }
 
-export type GenderOptionsType = { value: GenderType; label: GenderType };
-export type OptionsType = { value: string; label: string };
+export type GenderOptionsType = {
+  id: string;
+  value: GenderType;
+  label: GenderType;
+};
+export type OptionsType = { id: string; value: string; label: string };
 export type GenderType = 'Male' | 'Female';
 
 type AgeRestrictionType = { minAge?: number; maxAge?: number };

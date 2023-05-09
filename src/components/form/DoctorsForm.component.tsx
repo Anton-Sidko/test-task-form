@@ -2,47 +2,81 @@ import { useState, useEffect } from 'react';
 import { Formik, Form } from 'formik';
 
 import { validationSchema } from '../../models/validationSchema';
-import { fetchCities, fetchDoctors, fetchSpecialties } from '../../utils/api';
-import { FORM_INITIAL_VALUES, GENDER_OPTIONS } from '../../models/const';
-import { City, Doctor, OptionsType, Specialty } from '../../models/types';
+import { fetchData } from '../../utils/api';
+import {
+  CITIES_URL,
+  DOCTORS_URL,
+  FORM_INITIAL_VALUES,
+  GENDER_OPTIONS,
+  SPECIALTIES_URL,
+} from '../../models/const';
+import { City, Doctor, Specialty } from '../../models/types';
 
 import InputField from '../inputs/InputField.component';
 import SelectField from '../inputs/SelectField.components';
-import { getSelectValue } from '../../utils/utils';
+import { getSelectOptions, getSelectValue } from '../../utils/utils';
+
+import './DoctorsForm.style.scss';
+import ErrorMessage from '../error-message/ErrorMessage.component';
+import Spinner from '../spinner/Spinner.component';
 
 const DoctorsForm = (): JSX.Element => {
   const [cities, setCities] = useState<City[]>([]);
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [isLoading, setIsLoading] = useState({
+    cities: true,
+    specialties: true,
+    doctors: true,
+  });
+  const [isFetchError, setIsFetchError] = useState({
+    cities: false,
+    specialties: false,
+    doctors: false,
+  });
 
   useEffect(() => {
-    async function getAllData() {
-      const cities = await fetchCities();
-      const specialties = await fetchSpecialties();
-      const doctors = await fetchDoctors();
-
-      setCities(cities);
-      setSpecialties(specialties);
-      setDoctors(doctors);
+    async function getCities() {
+      try {
+        const citiesData = await fetchData<City[]>(CITIES_URL);
+        setCities(citiesData);
+      } catch (error) {
+        setIsFetchError(i => ({ ...i, cities: true }));
+      } finally {
+        setIsLoading(i => ({ ...i, cities: false }));
+      }
     }
 
-    getAllData();
+    async function getSpecialties() {
+      try {
+        const specialtiesData = await fetchData<Specialty[]>(SPECIALTIES_URL);
+        setSpecialties(specialtiesData);
+      } catch (error) {
+        setIsFetchError(i => ({ ...i, specialties: true }));
+      } finally {
+        setIsLoading(i => ({ ...i, specialties: false }));
+      }
+    }
+
+    async function getDoctors() {
+      try {
+        const doctorsData = await fetchData<Doctor[]>(DOCTORS_URL);
+        setDoctors(doctorsData);
+      } catch (error) {
+        setIsFetchError(i => ({ ...i, doctors: true }));
+      } finally {
+        setIsLoading(i => ({ ...i, doctors: false }));
+      }
+    }
+
+    getCities();
+    getSpecialties();
+    getDoctors();
   }, []);
 
-  const citiesOptions: OptionsType[] = cities.map(city => ({
-    value: city.name,
-    label: city.name,
-  }));
-
-  const specialtiesOptions: OptionsType[] = specialties.map(specialty => ({
-    value: specialty.name,
-    label: specialty.name,
-  }));
-
-  const doctorsOptions: OptionsType[] = doctors.map(doctor => ({
-    value: `${doctor.name} ${doctor.surname}`,
-    label: `${doctor.name} ${doctor.surname}`,
-  }));
+  const citiesOptions = getSelectOptions(cities);
+  const specialtiesOptions = getSelectOptions(specialties);
+  const doctorsOptions = getSelectOptions(doctors);
 
   return (
     <Formik
@@ -61,7 +95,7 @@ const DoctorsForm = (): JSX.Element => {
         }, 400);
       }}
     >
-      <Form>
+      <Form className="doctors-form">
         <InputField
           name="name"
           type="text"
@@ -80,23 +114,41 @@ const DoctorsForm = (): JSX.Element => {
           options={GENDER_OPTIONS}
         />
 
-        <SelectField
-          name="city"
-          placeholder="Please select your city"
-          options={citiesOptions}
-        />
+        {isLoading.cities ? (
+          <Spinner />
+        ) : isFetchError.cities ? (
+          <ErrorMessage />
+        ) : (
+          <SelectField
+            name="city"
+            placeholder="Please select your city"
+            options={citiesOptions}
+          />
+        )}
 
-        <SelectField
-          name="specialty"
-          placeholder="Please select doctor's specialty"
-          options={specialtiesOptions}
-        />
+        {isLoading.specialties ? (
+          <Spinner />
+        ) : isFetchError.specialties ? (
+          <ErrorMessage />
+        ) : (
+          <SelectField
+            name="specialty"
+            placeholder="Please select doctor's specialty"
+            options={specialtiesOptions}
+          />
+        )}
 
-        <SelectField
-          name="doctor"
-          placeholder="Please select doctor"
-          options={doctorsOptions}
-        />
+        {isLoading.doctors ? (
+          <Spinner />
+        ) : isFetchError.doctors ? (
+          <ErrorMessage />
+        ) : (
+          <SelectField
+            name="doctor"
+            placeholder="Please select doctor"
+            options={doctorsOptions}
+          />
+        )}
 
         <InputField
           name="email"
