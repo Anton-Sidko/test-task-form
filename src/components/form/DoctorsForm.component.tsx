@@ -19,6 +19,7 @@ import { getSelectOptions, getSelectValue } from '../../utils/utils';
 import './DoctorsForm.style.scss';
 import ErrorMessage from '../error-message/ErrorMessage.component';
 import Spinner from '../spinner/Spinner.component';
+import Button from '../button/Button.component';
 
 const DoctorsForm = (): JSX.Element => {
   const [cities, setCities] = useState<City[]>([]);
@@ -39,6 +40,8 @@ const DoctorsForm = (): JSX.Element => {
     specialties: false,
     doctors: false,
   });
+  const [isDataSended, setIsDataSended] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     async function getCities() {
@@ -86,6 +89,10 @@ const DoctorsForm = (): JSX.Element => {
   const specialtiesOptions = getSelectOptions(filteredSpecialties);
   const doctorsOptions = getSelectOptions(filteredDoctors);
 
+  const birthDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+  };
+
   const selectGenderHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const sex = e.target.value;
     const newSpecialties = specialties.filter(specialty => {
@@ -124,12 +131,18 @@ const DoctorsForm = (): JSX.Element => {
         getSelectValue(specialtiesOptions),
         getSelectValue(doctorsOptions)
       )}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={(values, { setSubmitting, resetForm }) => {
+        setIsSubmitting(true);
         console.log(values);
         setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
           setSubmitting(false);
-        }, 400);
+          setIsSubmitting(false);
+          setIsDataSended(true);
+          resetForm();
+        }, 1000);
+        setTimeout(() => {
+          setIsDataSended(false);
+        }, 3000);
       }}
     >
       <Form className="doctors-form">
@@ -143,6 +156,7 @@ const DoctorsForm = (): JSX.Element => {
           name="birthDate"
           type="date"
           labelText="Your birthday"
+          onChange={birthDateHandler}
         />
 
         <SelectField
@@ -200,7 +214,11 @@ const DoctorsForm = (): JSX.Element => {
           placeholder="+** *** *** ** **"
         />
 
-        <button type="submit">Submit</button>
+        {isDataSended && (
+          <span className="send-status">Thank you, form submitted</span>
+        )}
+
+        <Button>{isSubmitting ? <Spinner /> : 'Submit form'}</Button>
       </Form>
     </Formik>
   );
