@@ -187,6 +187,9 @@ const DoctorsForm = (): JSX.Element => {
           setIsSubmitting(false);
           setIsDataSended(true);
           resetForm({ values: FORM_INITIAL_VALUES });
+          setFilteredCities(cities);
+          setFilteredSpecialties(specialties);
+          setFilteredDoctors(doctors);
         }, 1000);
         setTimeout(() => {
           setIsDataSended(false);
