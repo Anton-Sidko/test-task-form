@@ -1,6 +1,8 @@
 import { Field, ErrorMessage, useFormikContext } from 'formik';
 import { OptionsType, GenderOptionsType } from '../../models/types';
 
+import './Inputs.styles.scss';
+
 interface SelectFieldProps {
   name: string;
   placeholder: string;
@@ -44,6 +46,12 @@ const SelectField = function ({
         name={name}
         {...otherProps}
         onChange={handleChange}
+        className={`${
+          form.touched[name as keyof typeof form.touched] &&
+          form.errors[name as keyof typeof form.touched]
+            ? 'is-invalid'
+            : ''
+        }`}
       >
         <option
           value={placeholder}

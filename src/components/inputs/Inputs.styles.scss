@@ -1,0 +1,41 @@
+.input-wrapper {
+  width: 100%;
+}
+
+.error-wrapper {
+  font-size: 1.4rem;
+  color: var(--color-bgc-3);
+  margin-top: 0.5em;
+  width: fit-content;
+}
+
+input {
+  appearance: none;
+}
+
+input,
+select {
+  border: 1px solid var(--color-bgc-2);
+  border-radius: 0;
+  outline: none;
+  background-color: var(--color-bgc-3);
+  width: 100%;
+  padding: 1rem;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: normal;
+  color: inherit;
+
+  &::placeholder {
+    color: inherit;
+    font-family: inherit;
+  }
+
+  &.is-invalid {
+    border: 1px solid var(--accent-color);
+  }
+}
+
+label {
+  color: var(--color-bgc-3);
+}

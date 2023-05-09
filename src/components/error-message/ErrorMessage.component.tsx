@@ -1,5 +1,11 @@
+import './ErrorMessage.styles.scss';
+
 const ErrorMessage = function (): JSX.Element {
-  return <p>Sorry, can't download data. Please try again</p>;
+  return (
+    <p className="error-message">
+      Sorry, can't download data. Please try again
+    </p>
+  );
 };
 
 export default ErrorMessage;

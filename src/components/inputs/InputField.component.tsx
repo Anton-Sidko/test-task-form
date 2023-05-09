@@ -1,4 +1,5 @@
 import { Field, ErrorMessage, useFormikContext } from 'formik';
+import './Inputs.styles.scss';
 
 interface InputFieldProps {
   name: string;
@@ -33,6 +34,12 @@ const InputField = function ({
         name={name}
         type={type}
         placeholder={placeholder}
+        className={`${
+          form.touched[name as keyof typeof form.touched] &&
+          form.errors[name as keyof typeof form.touched]
+            ? 'is-invalid'
+            : ''
+        }`}
         {...otherProps}
         onChange={handleChange}
       />

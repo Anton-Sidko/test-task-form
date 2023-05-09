@@ -29,9 +29,10 @@ body {
 
 :root {
   --main-color: #19647e;
-  --accent-color: #f2542d;
+  --accent-color: #df5735;
   --color-bgc: #609cb6;
   --color-bgc-2: #b4c4dd;
+  --color-bgc-3: #dee1e7;
   --color-text: #070606;
 }
 
@@ -56,5 +57,6 @@ body {
 .content-container {
   width: min(100%, 1440px);
   margin: 0 auto;
+  padding: 0 15px;
 }
 

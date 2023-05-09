@@ -1,39 +1,20 @@
 .button-default {
   font-family: inherit;
   font-weight: 500;
-  background-color: var(--main-color);
-  color: var(--accent-color);
-  padding: 15px 48px;
+  background-color: var(--color-bgc-3);
+  padding: 1em 2em;
   border-radius: 5px;
   border: 1px solid var(--main-color);
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 170px;
-
+  min-width: 100px;
+  margin-left: auto;
+  transition: all 0.5s;
   &:hover,
   &:active {
     background-color: var(--accent-color);
-    color: var(--main-color);
-  }
-
-  &.footer-subscribe-btn {
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    border-radius: 0 5px 5px 0;
-    height: 100%;
-    min-width: 100px;
-  }
-}
-
-.btn-send-wrapper {
-  .button-default {
-    margin-left: auto;
-  }
-  .send-img {
-    width: 24rem;
-    margin-left: auto;
-    margin-right: 7rem;
+    color: var(--color-bgc-3);
   }
 }
