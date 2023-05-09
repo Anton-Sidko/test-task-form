@@ -130,7 +130,6 @@ const DoctorsForm = (): JSX.Element => {
       }
       return true;
     });
-
     setFilteredSpecialties(newSpecialties);
     setFilteredDoctors(newDoctors);
   };
@@ -139,7 +138,6 @@ const DoctorsForm = (): JSX.Element => {
     const cityName = e.target.value;
     const cityId = cities.find(city => city.name === cityName)?.id;
     const newDoctors = doctors.filter(doctor => doctor.cityId === cityId);
-
     setFilteredDoctors(newDoctors);
   };
 
