@@ -28,3 +28,10 @@ export const getSelectOptions = (
       label: item.name,
     };
   });
+
+export const calculateAge = function (birthDate: Date): number {
+  const now = new Date();
+  const diff = now.getTime() - birthDate.getTime();
+  const ageDate = new Date(diff);
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+};

@@ -6,7 +6,9 @@ interface SelectFieldProps {
   placeholder: string;
   options: OptionsType[] | GenderOptionsType[];
   labelText?: string;
-  onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChange?:
+    | ((event: React.ChangeEvent<HTMLSelectElement>) => void)
+    | ((event: React.ChangeEvent<HTMLSelectElement>) => [string, string]);
 }
 
 const SelectField = function ({
@@ -21,6 +23,14 @@ const SelectField = function ({
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (onChange) {
       onChange(event);
+      const onChangeResult = onChange(event);
+
+      if (onChangeResult) {
+        const [cityName, specialtyName] = onChangeResult;
+
+        form.setFieldValue('city', cityName);
+        form.setFieldValue('specialty', specialtyName);
+      }
     }
     form.setFieldValue(name, event.target.value);
   };

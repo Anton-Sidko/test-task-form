@@ -14,7 +14,11 @@ import { City, Doctor, Specialty } from '../../models/types';
 
 import InputField from '../inputs/InputField.component';
 import SelectField from '../inputs/SelectField.components';
-import { getSelectOptions, getSelectValue } from '../../utils/utils';
+import {
+  calculateAge,
+  getSelectOptions,
+  getSelectValue,
+} from '../../utils/utils';
 
 import './DoctorsForm.style.scss';
 import ErrorMessage from '../error-message/ErrorMessage.component';
@@ -90,7 +94,16 @@ const DoctorsForm = (): JSX.Element => {
   const doctorsOptions = getSelectOptions(filteredDoctors);
 
   const birthDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
+    const age = calculateAge(new Date(e.target.value));
+    let newDoctors;
+
+    if (age < 18) {
+      newDoctors = doctors.filter(doctor => doctor.isPediatrician === true);
+    } else {
+      newDoctors = doctors.filter(doctor => doctor.isPediatrician === false);
+    }
+
+    setFilteredDoctors(newDoctors);
   };
 
   const selectGenderHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -122,6 +135,43 @@ const DoctorsForm = (): JSX.Element => {
     setFilteredDoctors(newDoctors);
   };
 
+  const selectCityHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const cityName = e.target.value;
+    const cityId = cities.find(city => city.name === cityName)?.id;
+    const newDoctors = doctors.filter(doctor => doctor.cityId === cityId);
+
+    setFilteredDoctors(newDoctors);
+  };
+
+  const selectSpecialtyHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const specialtyName = e.target.value;
+    const specialtyId = specialties.find(
+      specialty => specialty.name === specialtyName
+    )?.id;
+
+    const newDoctors = doctors.filter(
+      doctor => doctor.specialityId === specialtyId
+    );
+    setFilteredDoctors(newDoctors);
+  };
+
+  const selectDoctorHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const [doctorName, doctorSurname] = e.target.value.split(' ');
+    const cityId = doctors.find(
+      doctor => doctor.name === doctorName && doctor.surname === doctorSurname
+    )?.cityId;
+    const specialtyId = doctors.find(
+      doctor => doctor.name === doctorName && doctor.surname === doctorSurname
+    )?.specialityId;
+
+    const cityName = cities.find(city => city.id === cityId)?.name;
+    const specialtyName = specialties.find(
+      specialty => specialty.id === specialtyId
+    )?.name;
+
+    return [cityName, specialtyName];
+  };
+
   return (
     <Formik
       initialValues={FORM_INITIAL_VALUES}
@@ -138,7 +188,7 @@ const DoctorsForm = (): JSX.Element => {
           setSubmitting(false);
           setIsSubmitting(false);
           setIsDataSended(true);
-          resetForm();
+          resetForm({ values: FORM_INITIAL_VALUES });
         }, 1000);
         setTimeout(() => {
           setIsDataSended(false);
@@ -175,6 +225,7 @@ const DoctorsForm = (): JSX.Element => {
             name="city"
             placeholder="Please select your city"
             options={citiesOptions}
+            onChange={selectCityHandler}
           />
         )}
 
@@ -187,6 +238,7 @@ const DoctorsForm = (): JSX.Element => {
             name="specialty"
             placeholder="Please select doctor's specialty"
             options={specialtiesOptions}
+            onChange={selectSpecialtyHandler}
           />
         )}
 
@@ -199,6 +251,7 @@ const DoctorsForm = (): JSX.Element => {
             name="doctor"
             placeholder="Please select doctor"
             options={doctorsOptions}
+            onChange={selectDoctorHandler}
           />
         )}
 

@@ -26,11 +26,12 @@ export const validationSchema = (
     doctor: Yup.string().required('Required').oneOf(doctors, 'Select option'),
     email: Yup.string().email('Invalid email address').required('Required'),
     phone: Yup.string()
-      .test('No chars', 'Phone number consist of digits', value => {
+      .test('No letters', "The field shouldn't contain letters", value => {
         if (value) {
           return /^[\d+()\s-]+$/.test(value);
         }
       })
-
+      .min(10, 'Must be 10 characters or more')
+      .max(20, 'Must be 20 characters or less')
       .required('Required'),
   });
