@@ -1,6 +1,6 @@
 # React Front-End test task
 
-[https://react-test-task-form.netlify.app/-link](Link) to preview on Netlify.
+[https://react-test-task-form.netlify.app/](Link) to preview on Netlify.
 
 This project created using vite + added SASS for styling. Also used TypeScript. Form create with formik, validation with Yup.
 
