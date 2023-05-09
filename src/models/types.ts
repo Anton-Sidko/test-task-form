@@ -17,7 +17,7 @@ export interface City {
 export interface Specialty {
   id: string;
   name: string;
-  params?: { gender: GenderType } | AgeRestrictionType;
+  params?: { gender: GenderType } | { minAge?: number; maxAge?: number };
 }
 
 export interface Doctor {
@@ -36,5 +36,3 @@ export type GenderOptionsType = {
 };
 export type OptionsType = { id: string; value: string; label: string };
 export type GenderType = 'Male' | 'Female';
-
-type AgeRestrictionType = { minAge?: number; maxAge?: number };

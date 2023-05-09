@@ -22,8 +22,13 @@ import Spinner from '../spinner/Spinner.component';
 
 const DoctorsForm = (): JSX.Element => {
   const [cities, setCities] = useState<City[]>([]);
+  const [filteredCities, setFilteredCities] = useState<City[]>([]);
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
+  const [filteredSpecialties, setFilteredSpecialties] = useState<Specialty[]>(
+    []
+  );
   const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [filteredDoctors, setFilteredDoctors] = useState<Doctor[]>([]);
   const [isLoading, setIsLoading] = useState({
     cities: true,
     specialties: true,
@@ -40,6 +45,7 @@ const DoctorsForm = (): JSX.Element => {
       try {
         const citiesData = await fetchData<City[]>(CITIES_URL);
         setCities(citiesData);
+        setFilteredCities(citiesData);
       } catch (error) {
         setIsFetchError(i => ({ ...i, cities: true }));
       } finally {
@@ -51,6 +57,7 @@ const DoctorsForm = (): JSX.Element => {
       try {
         const specialtiesData = await fetchData<Specialty[]>(SPECIALTIES_URL);
         setSpecialties(specialtiesData);
+        setFilteredSpecialties(specialtiesData);
       } catch (error) {
         setIsFetchError(i => ({ ...i, specialties: true }));
       } finally {
@@ -62,6 +69,7 @@ const DoctorsForm = (): JSX.Element => {
       try {
         const doctorsData = await fetchData<Doctor[]>(DOCTORS_URL);
         setDoctors(doctorsData);
+        setFilteredDoctors(doctorsData);
       } catch (error) {
         setIsFetchError(i => ({ ...i, doctors: true }));
       } finally {
@@ -74,9 +82,38 @@ const DoctorsForm = (): JSX.Element => {
     getDoctors();
   }, []);
 
-  const citiesOptions = getSelectOptions(cities);
-  const specialtiesOptions = getSelectOptions(specialties);
-  const doctorsOptions = getSelectOptions(doctors);
+  const citiesOptions = getSelectOptions(filteredCities);
+  const specialtiesOptions = getSelectOptions(filteredSpecialties);
+  const doctorsOptions = getSelectOptions(filteredDoctors);
+
+  const selectGenderHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const sex = e.target.value;
+    const newSpecialties = specialties.filter(specialty => {
+      if (specialty.params && 'gender' in specialty.params) {
+        return specialty.params.gender === sex;
+      }
+      return true;
+    });
+
+    const newDoctors = doctors.filter(doctor => {
+      const id = doctor.specialityId;
+      const doctorSpecialty = specialties.find(
+        specialty => specialty.id === id
+      );
+
+      if (
+        doctorSpecialty &&
+        doctorSpecialty.params &&
+        'gender' in doctorSpecialty.params
+      ) {
+        return doctorSpecialty.params.gender === sex;
+      }
+      return true;
+    });
+
+    setFilteredSpecialties(newSpecialties);
+    setFilteredDoctors(newDoctors);
+  };
 
   return (
     <Formik
@@ -112,6 +149,7 @@ const DoctorsForm = (): JSX.Element => {
           name="sex"
           placeholder="Please select your gender"
           options={GENDER_OPTIONS}
+          onChange={selectGenderHandler}
         />
 
         {isLoading.cities ? (

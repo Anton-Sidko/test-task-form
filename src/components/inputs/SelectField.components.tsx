@@ -1,4 +1,4 @@
-import { Field, ErrorMessage } from 'formik';
+import { Field, ErrorMessage, useFormikContext } from 'formik';
 import { OptionsType, GenderOptionsType } from '../../models/types';
 
 interface SelectFieldProps {
@@ -6,6 +6,7 @@ interface SelectFieldProps {
   placeholder: string;
   options: OptionsType[] | GenderOptionsType[];
   labelText?: string;
+  onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 const SelectField = function ({
@@ -13,8 +14,17 @@ const SelectField = function ({
   placeholder,
   options,
   labelText,
+  onChange,
   ...otherProps
 }: SelectFieldProps): JSX.Element {
+  const form = useFormikContext();
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    if (onChange) {
+      onChange(event);
+    }
+    form.setFieldValue(name, event.target.value);
+  };
+
   return (
     <div className="input-wrapper">
       {labelText && <label htmlFor={name}>{labelText}</label>}
@@ -23,6 +33,7 @@ const SelectField = function ({
         as="select"
         name={name}
         {...otherProps}
+        onChange={handleChange}
       >
         <option
           value={placeholder}
