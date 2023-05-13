@@ -3,7 +3,6 @@ import * as Yup from 'yup';
 export const validationSchema = (
   genders: string[],
   cities: string[],
-  specialties: string[],
   doctors: string[]
 ) =>
   Yup.object({
@@ -22,7 +21,7 @@ export const validationSchema = (
       .required('Required'),
     sex: Yup.string().required('Required').oneOf(genders, 'Select option'),
     city: Yup.string().required('Required').oneOf(cities, 'Select option'),
-    specialty: Yup.string().notRequired().oneOf(specialties, 'Select option'),
+    specialty: Yup.string().notRequired(),
     doctor: Yup.string().required('Required').oneOf(doctors, 'Select option'),
     email: Yup.string().email('Invalid email address').required('Required'),
     phone: Yup.string()

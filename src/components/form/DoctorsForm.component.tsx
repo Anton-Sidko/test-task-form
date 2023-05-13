@@ -155,12 +155,12 @@ const DoctorsForm = (): JSX.Element => {
 
   const selectDoctorHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const [doctorName, doctorSurname] = e.target.value.split(' ');
-    const cityId = doctors.find(
+    const currentDoctor = doctors.find(
       doctor => doctor.name === doctorName && doctor.surname === doctorSurname
-    )?.cityId;
-    const specialtyId = doctors.find(
-      doctor => doctor.name === doctorName && doctor.surname === doctorSurname
-    )?.specialityId;
+    );
+
+    const cityId = currentDoctor?.cityId;
+    const specialtyId = currentDoctor?.specialityId;
 
     const cityName = cities.find(city => city.id === cityId)?.name;
     const specialtyName = specialties.find(
@@ -176,7 +176,6 @@ const DoctorsForm = (): JSX.Element => {
       validationSchema={validationSchema(
         getSelectValue(GENDER_OPTIONS),
         getSelectValue(citiesOptions),
-        getSelectValue(specialtiesOptions),
         getSelectValue(doctorsOptions)
       )}
       onSubmit={(values, { setSubmitting, resetForm }) => {
